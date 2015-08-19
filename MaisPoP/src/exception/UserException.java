@@ -1,7 +1,7 @@
 package exception;
 
 public class UserException extends Exception {
-	
+
 	/**
 	 * 
 	 */
@@ -9,13 +9,11 @@ public class UserException extends Exception {
 
 	public UserException() {
 		super("Usuario invalido!");
-		
+
 	}
-	
+
 	public UserException(String string) {
 		super(string);
-		
 	}
 
 }
-

@@ -23,23 +23,19 @@ public class Fachada {
 		controle.aniciaSistema();
 	}
 	
-	public void fechaSistema() {
-		controle.fechaSistema();
-	}
-	
 	public String cadastraUsuario(String nome, String email, String senha, String dataNasc, String imagem) throws UserException {
 			return controle.cadastraUsuario(nome, email, senha, dataNasc, imagem);	
 	}
 	
 	public String cadastraUsuario(String nome, String dataNasc, String email, String senha) throws Exception {
-			return controle.cadastraUsuario(nome, dataNasc, email, senha, "default");
+			return controle.cadastraUsuario(nome, dataNasc, email, senha, "resources/default.jpg");
 	}
 	
-	public void login(String email, String senha) {
-		controle.login(email, senha);
+	public void login(String email, String senha) throws UserException {
+		 controle.login(email, senha);
 	}
 	
-	public void logout() {
+	public void logout() throws UserException {
 		controle.logout();
 	}
 	
@@ -47,8 +43,16 @@ public class Fachada {
 		return controle.getInfoUsuario(atributo, usuario);
 	}
 	
-	public void removeUsuario(Usuario usuario) {
+	public String getInfoUsuario(String atributo) throws UserException {
+		return controle.getInfoUsuario(atributo);
+	}
+	
+	public void removeUsuario(String usuario) {
 		controle.removeUsuario(usuario);
+	}
+	
+	public void fechaSistema() throws UserException {
+		controle.fechaSistema();
 	}
 	
 
