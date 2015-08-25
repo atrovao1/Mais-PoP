@@ -44,14 +44,14 @@ public class Usuario {
 		this.imagem = imagem;
 	}
 
-	private boolean verificaNome(String nome) {
+	public boolean verificaNome(String nome) {
 		if (nome == null || nome.trim().isEmpty()) {
 			return false;
 		}
 		return true;
 	}
 
-	private boolean verificaEmail(String email) {
+	public boolean verificaEmail(String email) {
 		if (verificaNome(email) & email.contains("@") & email.indexOf("@") != 0) {
 			if (email.endsWith(".com") || email.endsWith(".com.br")) {
 				return true;
@@ -60,18 +60,43 @@ public class Usuario {
 		return false;
 	}
 
-	private boolean verificaFormatoDataNasc(String dataNasc) {
+	public boolean verificaFormatoDataNasc(String dataNasc) {
 		if (verificaNome(dataNasc) & dataNasc.length() == 10) {
 			for (int i = 0; i < dataNasc.length() - 2; i = i + 2) {
-				if (dataNasc.indexOf("/") == i) {
+				if (dataNasc.indexOf("/") == i & verificaDia(dataNasc)& verificaMes(dataNasc)& verificaAno(dataNasc)) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
+	
+	private boolean verificaDia(String dataNasc) {
+		String dia = dataNasc.substring(0, 2);
+		 for (char letra : dia.toCharArray())  
+	            if(letra < '0' || letra > '9')  
+	                return false;  
+	        return true;  
+	}
+	
+	private boolean verificaMes(String dataNasc) {
+		String mes = dataNasc.substring(3, 5);
+		 for (char letra : mes.toCharArray())  
+	            if(letra < '0' || letra > '9')  
+	                return false;  
+	        return true;  
+	}
+	
+	private boolean verificaAno(String dataNasc) {
+		String ano = dataNasc.substring(6, 10);
+		 for (char letra : ano.toCharArray())  
+	            if(letra < '0' || letra > '9')  
+	                return false;  
+	        return true;  
+	}
+	
 
-	private boolean verificaValorDataNasc(String dataNasc) {
+	public boolean verificaValorDataNasc(String dataNasc) {
 		if (verificaFormatoDataNasc(dataNasc)) {
 			String dia = dataNasc.substring(0, 2);
 			String mes = dataNasc.substring(3, 5);

@@ -154,7 +154,16 @@ public class Controle {
 				return usuarioLogado.getNome();
 				
 			} else if (atributo.equalsIgnoreCase("data de nascimento")) {
-				return usuarioLogado.getDataNasc();
+				String[] data = usuarioLogado.getDataNasc().split("/");
+				String dataUsuario = "";
+				for (int i = data.length - 1; i >= 0; i--) {
+					if (i == 0) {
+						dataUsuario = dataUsuario + data[i];
+					} else {
+						dataUsuario = dataUsuario + data[i] + "-";
+					}
+				}
+				return dataUsuario;
 				
 			} else if (atributo.equalsIgnoreCase("foto") || atributo.equalsIgnoreCase("imagem")) {
 				return usuarioLogado.getImagem();
@@ -171,5 +180,52 @@ public class Controle {
 			throw new UserException("Nao foi possivel fechar o sistema. Um usuarix ainda esta logadx.");
 		}
 	}
+	
+	public void atualizaPerfil(String atributo, String valor) throws UserException {
+		if (usuarioLogado != null) {
+			if (atributo.equalsIgnoreCase("email") || atributo.equalsIgnoreCase("E-mail")) {
+				if(usuarioLogado.verificaEmail(valor)){
+					usuarioLogado.setEmail(valor);
+				} else {
+					throw new UserException("Erro na atualizacao de perfil. Formato de e-mail esta invalido.");
+			}
+			
+		} else if (atributo.equalsIgnoreCase("nome")) {
+			if (usuarioLogado.verificaNome(valor)) {
+			usuarioLogado.setNome(valor);
+			} else {
+				throw new UserException("Erro na atualizacao de perfil. Nome dx usuarix nao pode ser vazio.");
+			}
+			
+		} else if (atributo.equalsIgnoreCase("data de nascimento")) {
+			if (!usuarioLogado.verificaFormatoDataNasc(valor)) {
+				throw new UserException("Erro na atualizacao de perfil. Formato de data esta invalida.");
+			}else if (!usuarioLogado.verificaValorDataNasc(valor)) {
+				throw new UserException("Erro na atualizacao de perfil. Data nao existe.");
+			} else{
+				usuarioLogado.setDataNasc(valor);
+				}
+			
+		} else if (atributo.equalsIgnoreCase("foto") || atributo.equalsIgnoreCase("imagem")) {
+			usuarioLogado.setImagem(valor);
+		}
+			}else {
+				throw new UserException("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
+			}
+	}
+	
+	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws UserException {
+		if (usuarioLogado != null) {
+			if (atributo.equalsIgnoreCase("senha")) {
+				if (!usuarioLogado.getSenha().equals(velhaSenha)) {
+					throw new UserException("Erro na atualizacao de perfil. A senha fornecida esta incorreta.");
+			} else if (usuarioLogado.getSenha().equals(velhaSenha)) {
+				usuarioLogado.setSenha(valor);
+			}
+		}	
+	}else {
+		throw new UserException("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
+	}
+				}
 	
 }

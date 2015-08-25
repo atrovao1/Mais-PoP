@@ -14,8 +14,9 @@ public class Fachada {
 	
 	public static void main(String[] args) {
 		args = new String[] {"maisPopularidade.Fachada",
-				"resources/Scripts de Teste"
-				+ "/usecase_1.txt"};
+				"resources/Scripts de Teste" + "/usecase_1.txt",
+				"resources/Scripts de Teste" + "/usecase_2.txt"
+		};
 		    EasyAccept.main(args);
 	}
 	
@@ -54,6 +55,16 @@ public class Fachada {
 	public void fechaSistema() throws UserException {
 		controle.fechaSistema();
 	}
+	
+	public void atualizaPerfil(String atributo, String valor) throws UserException {
+		controle.atualizaPerfil(atributo, valor);
+	}
+	
+	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws UserException {
+		controle.atualizaPerfil(atributo, valor, velhaSenha);
+	}
+	
+	
 	
 
 }
