@@ -2,6 +2,7 @@ package maisPopularidade;
 
 import java.util.ArrayList;
 
+import exception.SystemException;
 import exception.UserException;
 
 public class Controle {
@@ -17,7 +18,9 @@ public class Controle {
 	public void aniciaSistema() {
 	}
 
-	public String cadastraUsuario(String nome, String email, String senha, String dataNasc, String imagem) throws UserException {
+	public String cadastraUsuario(String nome, String email, String senha, String dataNasc, String imagem)
+		   throws UserException {
+		
 		Usuario novoUsuario = new Usuario(nome, email, senha, dataNasc, imagem);
 		armazenaUsuario(novoUsuario);
 		return novoUsuario.getEmail();
@@ -33,7 +36,7 @@ public class Controle {
 		return usuariosCadastrados;
 	}
 
-	public void login(String email, String senha) throws UserException {
+	public void login(String email, String senha) throws SystemException {
 		if (usuarioLogado == null) {
 			Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
 			if (usuarioProcurado != null) {
@@ -41,21 +44,21 @@ public class Controle {
 					setUsuarioLogado(usuarioProcurado);
 					
 				} else if (senha != usuarioProcurado.getSenha()) {
-					throw new UserException(
+					throw new SystemException(
 							"Nao foi possivel realizar login. Senha invalida.");
 				
 				} else if (email != usuarioProcurado.getEmail()) {
-					throw new UserException(
+					throw new SystemException(
 							"Nao foi possivel realizar login. Um usuarix com email "
 									+ email + " nao esta cadastradx.");
 					}
 			} else {
-				throw new UserException(
+				throw new SystemException(
 						"Nao foi possivel realizar login. Um usuarix com email "
 								+ email + " nao esta cadastradx.");
 				}
 		} else {
-			throw new UserException(
+			throw new SystemException(
 					"Nao foi possivel realizar login. Um usuarix ja esta logadx: "
 							+ "" + usuarioLogado.getNome() + ".");
 		}
@@ -94,11 +97,11 @@ public class Controle {
 		}
 	}
 	
-	public void logout() throws UserException {
+	public void logout() throws SystemException {
 		if (usuarioLogado != null) {
 			setUsuarioLogado(null);
 		} else {
-			throw new UserException(
+			throw new SystemException(
 					"Nao eh possivel realizar logout. Nenhum usuarix esta logadx no +pop.");
 		}
 	}
@@ -110,7 +113,7 @@ public class Controle {
 		}
 	}
 
-	public String getInfoUsuario(String atributo, String usuario) throws UserException {
+	public String getInfoUsuario(String atributo, String usuario) throws SystemException {
 		Usuario usuarioProcurado = procuraUsuarioPeloEmail(usuario);
 		if (usuarioProcurado != null) {
 			if (atributo.equalsIgnoreCase("email")) {
@@ -136,16 +139,16 @@ public class Controle {
 				return usuarioProcurado.getImagem();
 				
 			} else if (atributo.equalsIgnoreCase("senha")) {
-				throw new UserException("A senha dx usuarix eh protegida.");
+				throw new SystemException("A senha dx usuarix eh protegida.");
 			}
 		} else {
-			throw new UserException("Um usuarix com email " + usuario
+			throw new SystemException("Um usuarix com email " + usuario
 					+ " nao esta cadastradx.");
 		}
 		return null;
 	}
 
-	public String getInfoUsuario(String atributo) throws UserException {
+	public String getInfoUsuario(String atributo) throws SystemException {
 		if (usuarioLogado != null) {
 			if (atributo.equalsIgnoreCase("email")) {
 				return usuarioLogado.getEmail();
@@ -169,39 +172,39 @@ public class Controle {
 				return usuarioLogado.getImagem();
 				
 			} else if (atributo.equalsIgnoreCase("senha")) {
-				throw new UserException("A senha dx usuarix eh protegida.");
+				throw new SystemException("A senha dx usuarix eh protegida.");
 			}
 		}
 		return null;
 	}
 	
-	public void fechaSistema() throws UserException {
+	public void fechaSistema() throws SystemException {
 		if (usuarioLogado != null) {
-			throw new UserException("Nao foi possivel fechar o sistema. Um usuarix ainda esta logadx.");
+			throw new SystemException("Nao foi possivel fechar o sistema. Um usuarix ainda esta logadx.");
 		}
 	}
 	
-	public void atualizaPerfil(String atributo, String valor) throws UserException {
+	public void atualizaPerfil(String atributo, String valor) throws SystemException {
 		if (usuarioLogado != null) {
 			if (atributo.equalsIgnoreCase("email") || atributo.equalsIgnoreCase("E-mail")) {
-				if(usuarioLogado.verificaEmail(valor)){
+				if(usuarioLogado.valida.email(valor)){
 					usuarioLogado.setEmail(valor);
 				} else {
-					throw new UserException("Erro na atualizacao de perfil. Formato de e-mail esta invalido.");
+					throw new SystemException("Erro na atualizacao de perfil. Formato de e-mail esta invalido.");
 			}
 			
 		} else if (atributo.equalsIgnoreCase("nome")) {
-			if (usuarioLogado.verificaNome(valor)) {
+			if (usuarioLogado.valida.nome(valor)) {
 				usuarioLogado.setNome(valor);
 			} else {
-				throw new UserException("Erro na atualizacao de perfil. Nome dx usuarix nao pode ser vazio.");
+				throw new SystemException("Erro na atualizacao de perfil. Nome dx usuarix nao pode ser vazio.");
 			}
 			
 		} else if (atributo.equalsIgnoreCase("data de nascimento")) {
-			if (!usuarioLogado.verificaFormatoDataNasc(valor)) {
-				throw new UserException("Erro na atualizacao de perfil. Formato de data esta invalida.");
-			}else if (!usuarioLogado.verificaValorDataNasc(valor)) {
-				throw new UserException("Erro na atualizacao de perfil. Data nao existe.");
+			if (!usuarioLogado.valida.formatoDataNasc(valor)) {
+				throw new SystemException("Erro na atualizacao de perfil. Formato de data esta invalida.");
+			}else if (!usuarioLogado.valida.valorDataNasc(valor)) {
+				throw new SystemException("Erro na atualizacao de perfil. Data nao existe.");
 			} else{
 				usuarioLogado.setDataNasc(valor);
 				}
@@ -210,21 +213,19 @@ public class Controle {
 			usuarioLogado.setImagem(valor);
 		}
 			}else {
-				throw new UserException("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
+				throw new SystemException("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
 			}
 	}
 	
-	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws UserException {
+	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws SystemException {
 		if (usuarioLogado != null) {
-			if (atributo.equalsIgnoreCase("Senha")) {
-				if (usuarioLogado.getSenha().equals(velhaSenha)) {
+				if (usuarioLogado.getSenha().equals(velhaSenha) & usuarioLogado.valida.senha(valor)) {
 					usuarioLogado.setSenha(valor);
 			} else  {
-				throw new UserException("Erro na atualizacao de perfil. A senha fornecida esta incorreta.");
-			}
+				throw new SystemException("Erro na atualizacao de perfil. A senha fornecida esta incorreta.");
 		}	
 	}else {
-		throw new UserException("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
+		throw new SystemException("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
 	}
 				}
 	

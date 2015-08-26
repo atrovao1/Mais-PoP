@@ -1,6 +1,7 @@
 package maisPopularidade;
 
 import easyaccept.EasyAccept;
+import exception.SystemException;
 import exception.UserException;
 
 
@@ -32,19 +33,19 @@ public class Fachada {
 			return controle.cadastraUsuario(nome, dataNasc, email, senha, "resources/default.jpg");
 	}
 	
-	public void login(String email, String senha) throws UserException {
+	public void login(String email, String senha) throws SystemException {
 		 controle.login(email, senha);
 	}
 	
-	public void logout() throws UserException {
+	public void logout() throws SystemException {
 		controle.logout();
 	}
 	
-	public String getInfoUsuario(String atributo, String usuario) throws UserException {
+	public String getInfoUsuario(String atributo, String usuario) throws SystemException {
 		return controle.getInfoUsuario(atributo, usuario);
 	}
 	
-	public String getInfoUsuario(String atributo) throws UserException {
+	public String getInfoUsuario(String atributo) throws SystemException {
 		return controle.getInfoUsuario(atributo);
 	}
 	
@@ -52,20 +53,17 @@ public class Fachada {
 		controle.removeUsuario(usuario);
 	}
 	
-	public void fechaSistema() throws UserException {
+	public void fechaSistema() throws SystemException {
 		controle.fechaSistema();
 	}
 	
-	public void atualizaPerfil(String atributo, String valor) throws UserException {
+	public void atualizaPerfil(String atributo, String valor) throws SystemException {
 		controle.atualizaPerfil(atributo, valor);
 	}
 	
-	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws UserException {
+	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws SystemException {
 		controle.atualizaPerfil(atributo, valor, velhaSenha);
 	}
 	
-	
-	
-
 }
 
