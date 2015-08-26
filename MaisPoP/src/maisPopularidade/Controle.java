@@ -192,7 +192,7 @@ public class Controle {
 			
 		} else if (atributo.equalsIgnoreCase("nome")) {
 			if (usuarioLogado.verificaNome(valor)) {
-			usuarioLogado.setNome(valor);
+				usuarioLogado.setNome(valor);
 			} else {
 				throw new UserException("Erro na atualizacao de perfil. Nome dx usuarix nao pode ser vazio.");
 			}
@@ -216,11 +216,11 @@ public class Controle {
 	
 	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws UserException {
 		if (usuarioLogado != null) {
-			if (atributo.equalsIgnoreCase("senha")) {
-				if (!usuarioLogado.getSenha().equals(velhaSenha)) {
-					throw new UserException("Erro na atualizacao de perfil. A senha fornecida esta incorreta.");
-			} else if (usuarioLogado.getSenha().equals(velhaSenha)) {
-				usuarioLogado.setSenha(valor);
+			if (atributo.equalsIgnoreCase("Senha")) {
+				if (usuarioLogado.getSenha().equals(velhaSenha)) {
+					usuarioLogado.setSenha(valor);
+			} else  {
+				throw new UserException("Erro na atualizacao de perfil. A senha fornecida esta incorreta.");
 			}
 		}	
 	}else {
