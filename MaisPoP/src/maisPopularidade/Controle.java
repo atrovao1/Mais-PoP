@@ -228,5 +228,21 @@ public class Controle {
 		throw new SystemException("Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop.");
 	}
 				}
+
+	public void criaPost(String mensagem, String data) throws Exception {
+		if (usuarioLogado == null) {
+			throw new SystemException("Nao eh possivel criar post. Nenhum usuarix esta logadx no +pop");
+			}
+			Post post = new Post(mensagem, data);
+			usuarioLogado.adicionaPost(post);
+		}
+	
+	public Post getPost(int index) throws Exception {
+		return usuarioLogado.getPostPeloIndex(index);
+	}
+	
+	public String getPost(String atributo, int index){
+		return usuarioLogado.getPost(atributo, index);
+	}
 	
 }

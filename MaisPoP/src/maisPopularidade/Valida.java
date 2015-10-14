@@ -105,4 +105,22 @@ public class Valida {
 		}
 		return false;
 	}
+
+	public boolean conteudoPost(String mensagem) {
+		if (mensagem == null || mensagem.trim().isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
+	public String hashtags(String mensagem) {
+		String[] palavras = mensagem.substring(mensagem.indexOf("#"),
+				mensagem.length()).split(" ");
+		for (String palavra : palavras) {
+			if (!palavra.startsWith("#"))
+				return palavra;
+		}
+		return null;
+	}
+	
 }

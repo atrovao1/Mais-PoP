@@ -16,7 +16,8 @@ public class Fachada {
 	public static void main(String[] args) {
 		args = new String[] {"maisPopularidade.Fachada",
 				"resources/Scripts de Teste" + "/usecase_1.txt",
-				"resources/Scripts de Teste" + "/usecase_2.txt"
+				"resources/Scripts de Teste" + "/usecase_2.txt",
+				"resources/Scripts de Teste" + "/usecase_3.txt"
 		};
 		    EasyAccept.main(args);
 	}
@@ -40,7 +41,6 @@ public class Fachada {
 	public void logout() throws SystemException {
 		controle.logout();
 	}
-	
 	public String getInfoUsuario(String atributo, String usuario) throws SystemException {
 		return controle.getInfoUsuario(atributo, usuario);
 	}
@@ -63,6 +63,18 @@ public class Fachada {
 	
 	public void atualizaPerfil(String atributo, String valor, String velhaSenha) throws SystemException {
 		controle.atualizaPerfil(atributo, valor, velhaSenha);
+	}
+	
+	public void criaPost(String mensagem, String data) throws Exception {
+		controle.criaPost(mensagem, data);
+	}
+	
+	public Post getPost(int index) throws Exception {
+		return controle.getPost(index);
+	}
+	
+	public String getPost(String atributo, int index){
+		return controle.getPost(atributo, index);
 	}
 	
 }
