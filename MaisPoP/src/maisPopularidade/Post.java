@@ -34,7 +34,7 @@ public class Post {
 			ArrayList<String> mensagem = new ArrayList<String>();
 			String[] palavras = conteudo.split(" ");
 			for (String palavra : palavras) {
-				if (!palavra.startsWith("#") && !palavra.startsWith("<"))
+				if (!palavra.startsWith("#") )//&& !palavra.startsWith("<"))
 					mensagem.add(palavra);
 			}
 			return String.join(" ", mensagem);
@@ -78,9 +78,6 @@ public class Post {
 		
 
 		public String getMensagem() {
-			if (separaMidia(mensagem) != ""){
-			return separaMensagem(mensagem) + " " + separaMidia(mensagem);
-			}
 				return separaMensagem(mensagem);
 		}
 
