@@ -47,6 +47,7 @@ public class Post {
 				if (palavra.startsWith("#"))
 					hashtags.add(palavra);
 			}
+			
 			return String.join(",", hashtags);
 		}
 		

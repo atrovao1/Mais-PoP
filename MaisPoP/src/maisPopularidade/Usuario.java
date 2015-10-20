@@ -11,7 +11,10 @@ public class Usuario {
 	private String email;
 	private String senha;
 	private String imagem;
-	private ArrayList posts;
+	private ArrayList<Post> posts;
+	private ArrayList<String> listaDeSolicitacoes;
+	private ArrayList<Usuario> listaDeAmigos;
+	private ArrayList<String> notificacoes;
 	public Valida valida;
 
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem) 
@@ -120,5 +123,47 @@ public class Usuario {
 		}
 		return (Post) posts.get(index);
 	}
+	
+	public String toString(){
+		return this.nome+" - "+this.email;
+	}
+
+	// Caso de Uso 4
+	
+	public ArrayList<Usuario> getListaDeAmigos() {
+		return listaDeAmigos;
+	}
+
+	public void adicionaAmigo(Usuario novoAmigo) {
+		setNotificacoes(novoAmigo.getNome()+" quer sua amizade.");
+	}
+	
+	public void removeAmigo(Usuario novoAmigo) {
+		this.listaDeAmigos.remove(novoAmigo);
+	}
+
+	public String getNotificacoes() {
+		String notificacao = notificacoes.get(0);
+		notificacoes.remove(0);
+		return notificacao;
+	}
+	
+	public int qtdNotificacoes(){
+		return this.notificacoes.size();
+	}
+
+	public void setNotificacoes(String notificacao) {
+		this.notificacoes.add(notificacao);
+	}
+	
+	public String aceitarAmizade(Usuario usuario){
+		listaDeAmigos.add(usuario);
+		return this.nome+" aceitou sua amizade.";
+	}
+	
+	public String rejeitaAmizade(Usuario usuario){
+		return this.nome+" rejeitou sua amizade.";
+	}
+
 
 }

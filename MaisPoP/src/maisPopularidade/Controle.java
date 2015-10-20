@@ -36,11 +36,11 @@ public class Controle {
 		return usuariosCadastrados;
 	}
 
-	public void login(String email, String senha) throws SystemException {
+	public int login(String email, String senha) throws SystemException {
+		Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
 		if (usuarioLogado == null) {
-			Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
 			if (usuarioProcurado != null) {
-				if (usuarioProcurado.getEmail().equals(email) & usuarioProcurado.getSenha().equals(senha)) {
+				if (usuarioProcurado.getEmail().equals(email) && usuarioProcurado.getSenha().equals(senha)) {
 					setUsuarioLogado(usuarioProcurado);
 					
 				} else if (senha != usuarioProcurado.getSenha()) {
@@ -62,6 +62,7 @@ public class Controle {
 					"Nao foi possivel realizar login. Um usuarix ja esta logadx: "
 							+ "" + usuarioLogado.getNome() + ".");
 		}
+		return usuarioLogado.qtdNotificacoes();
 	}
 
 	public Usuario getUsuarioLogado() {
@@ -89,12 +90,12 @@ public class Controle {
 	}
 
 	public Usuario procuraUsuarioPeloEmail(String email) {
-		int index = retornaIndiceDoUsuario(email);
-		if (index != -1) {
-			return usuariosCadastrados.get(index);
-		} else {
-			return null;
+		for (Usuario usuario: usuariosCadastrados){
+			if (usuario.getEmail().equals(email)){
+				return usuario;
+			}
 		}
+		return null;
 	}
 	
 	public void logout() throws SystemException {
@@ -106,15 +107,15 @@ public class Controle {
 		}
 	}
 
-	public void removeUsuario(String usuario) {
-		Usuario usuarioParaRemover = procuraUsuarioPeloEmail(usuario);
+	public void removeUsuario(String email) {
+		Usuario usuarioParaRemover = procuraUsuarioPeloEmail(email);
 		if(usuarioParaRemover != null) {
 			usuariosCadastrados.remove(usuarioParaRemover);
 		}
 	}
 
-	public String getInfoUsuario(String atributo, String usuario) throws SystemException {
-		Usuario usuarioProcurado = procuraUsuarioPeloEmail(usuario);
+	public String getInfoUsuario(String atributo, String email) throws SystemException {
+		Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
 		if (usuarioProcurado != null) {
 			if (atributo.equalsIgnoreCase("email")) {
 				return usuarioProcurado.getEmail();
@@ -142,7 +143,7 @@ public class Controle {
 				throw new SystemException("A senha dx usuarix eh protegida.");
 			}
 		} else {
-			throw new SystemException("Um usuarix com email " + usuario
+			throw new SystemException("Um usuarix com email " + email
 					+ " nao esta cadastradx.");
 		}
 		return null;
@@ -237,6 +238,22 @@ public class Controle {
 			usuarioLogado.adicionaPost(post);
 		}
 	
+	public void adicionaAmigo(String email) {
+		Usuario novoAmigo = procuraUsuarioPeloEmail(email);
+		usuarioLogado.adicionaAmigo(novoAmigo);
+	}
+	
+	public String getNotificacoes(){
+		return usuarioLogado.getNotificacoes();
+	}
+	
+	public String getNextNotificacao() throws Exception{
+		if (usuarioLogado.qtdNotificacoes() == 0){
+			throw new SystemException("Nao ha mais notificacoes.");
+		}
+		return usuarioLogado.getNotificacoes();
+	}
+
 	public Post getPost(int index) throws Exception {
 		return usuarioLogado.getPostPeloIndex(index);
 	}
