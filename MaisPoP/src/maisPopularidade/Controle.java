@@ -261,5 +261,4 @@ public class Controle {
 	public String getPost(String atributo, int index){
 		return usuarioLogado.getPost(atributo, index);
 	}
-	
 }

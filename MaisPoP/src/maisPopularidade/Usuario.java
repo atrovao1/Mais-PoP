@@ -165,5 +165,4 @@ public class Usuario {
 		return this.nome+" rejeitou sua amizade.";
 	}
 
-
 }

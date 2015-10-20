@@ -78,6 +78,5 @@ public class Fachada {
 	public String getPost(String atributo, int index){
 		return controle.getPost(atributo, index);
 	}
-	
 }
 
