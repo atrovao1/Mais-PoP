@@ -78,5 +78,39 @@ public class Fachada {
 	public String getPost(String atributo, int index){
 		return controle.getPost(atributo, index);
 	}
+	
+	public void adicionaAmigo(String email) throws Exception{
+		controle.adicionaAmigo(email);
+	}
+	
+	public void removeAmigo(String email) throws Exception{
+		controle.removeAmigo(email);
+	}
+	
+	public int getNotificacoes(){
+		return controle.getNotificacoes();
+	}
+	
+	public String getNextNotificacao() {
+		try {
+			return controle.getNextNotificacao();
+		} catch (Exception e) {
+			
+			e.getMessage();
+		}
+		return null;
+	}
+	
+	public void aceitaAmizade(String email) throws SystemException{
+		controle.aceitaAmizade(email);
+	}
+	
+	public void rejeitaAmizade(String email) throws SystemException{
+		controle.rejeitaAmizade(email);
+	}
+	
+	public int getQtdAmigos(){
+		return controle.getQtdAmigos();
+	}
 }
 

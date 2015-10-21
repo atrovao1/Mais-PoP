@@ -36,7 +36,7 @@ public class Controle {
 		return usuariosCadastrados;
 	}
 
-	public int login(String email, String senha) throws SystemException {
+	public void login(String email, String senha) throws SystemException {
 		Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
 		if (usuarioLogado == null) {
 			if (usuarioProcurado != null) {
@@ -62,7 +62,6 @@ public class Controle {
 					"Nao foi possivel realizar login. Um usuarix ja esta logadx: "
 							+ "" + usuarioLogado.getNome() + ".");
 		}
-		return usuarioLogado.qtdNotificacoes();
 	}
 
 	public Usuario getUsuarioLogado() {
@@ -237,22 +236,6 @@ public class Controle {
 			Post post = new Post(mensagem, data);
 			usuarioLogado.adicionaPost(post);
 		}
-	
-	public void adicionaAmigo(String email) {
-		Usuario novoAmigo = procuraUsuarioPeloEmail(email);
-		usuarioLogado.adicionaAmigo(novoAmigo);
-	}
-	
-	public String getNotificacoes(){
-		return usuarioLogado.getNotificacoes();
-	}
-	
-	public String getNextNotificacao() throws Exception{
-		if (usuarioLogado.qtdNotificacoes() == 0){
-			throw new SystemException("Nao ha mais notificacoes.");
-		}
-		return usuarioLogado.getNotificacoes();
-	}
 
 	public Post getPost(int index) throws Exception {
 		return usuarioLogado.getPostPeloIndex(index);
@@ -260,5 +243,63 @@ public class Controle {
 	
 	public String getPost(String atributo, int index){
 		return usuarioLogado.getPost(atributo, index);
+	}
+	
+	public void adicionaAmigo(String email) throws SystemException{
+		Usuario novoAmigo = procuraUsuarioPeloEmail(email);
+		if(novoAmigo == null){
+			throw new SystemException("Um usuarix com email "+ email +" nao esta cadastradx.");
+		
+		}else{
+		
+			usuarioLogado.adicionaAmigo(novoAmigo);
+		}
+	}
+	
+	public void removeAmigo(String email) throws Exception{
+		Usuario amigoRemovido = procuraUsuarioPeloEmail(email);
+		if(amigoRemovido == null){
+			throw new SystemException("Um usuarix com email "+ email +" nao esta cadastradx.");
+		
+		}else{
+			usuarioLogado.removeAmigo(amigoRemovido);
+		}
+	}
+	public int getNotificacoes(){
+		return usuarioLogado.getNotificacoes();
+	}
+	
+	public String getNextNotificacao() throws Exception{
+		return usuarioLogado.getNextNotificacao();
+	}
+	
+	public void rejeitaAmizade(String email) throws SystemException{
+			Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
+			if(usuarioLogado.getListaDeSolicitacoes().contains(usuarioProcurado)){
+				throw new SystemException(usuarioProcurado.getNome()+" nao lhe enviou solicitacoes de amizade.");
+			
+			}else if(usuarioProcurado == null){
+				throw new SystemException("Um usuarix com email "+ email +" nao esta cadastradx.");
+				
+			}else{
+			usuarioLogado.rejeitaAmizade(usuarioProcurado);
+			}
+		}
+	
+	public void aceitaAmizade(String email) throws SystemException{
+		Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
+		if(usuarioLogado.getListaDeSolicitacoes().contains(usuarioProcurado)){
+			throw new SystemException(usuarioProcurado.getNome()+" nao lhe enviou solicitacoes de amizade.");
+		
+		}else if(usuarioProcurado == null){
+			throw new SystemException("Um usuarix com email "+ email +" nao esta cadastradx.");
+		
+		}else{
+			usuarioLogado.aceitaAmizade(usuarioProcurado);
+		}
+	}
+	
+	public int getQtdAmigos(){
+		return usuarioLogado.getQtdAmigos();
 	}
 }
