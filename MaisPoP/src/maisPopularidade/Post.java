@@ -8,6 +8,7 @@ public class Post {
 	private String hashtag;
 	private String data;
 	private Valida valida;
+	private int curtidas;
 	
 	public Post(String mensagem, String data) throws Exception {
 		this.valida = new Valida();
@@ -28,6 +29,7 @@ public class Post {
 		this.mensagem = mensagem;
 		this.hashtag = hashtag;
 		this.data = data;
+		this.curtidas = 0;
 	}
 	
 		public String separaMensagem(String conteudo) {
@@ -101,6 +103,14 @@ public class Post {
 		@Override
 		public String toString() {
 			return mensagem  + " (" + formataDataPost() + ")";
+		}
+
+		public int getCurtidas() {
+			return curtidas;
+		}
+
+		public void setCurtidas(int curtidas) {
+			this.curtidas += curtidas;
 		}
 		
 		

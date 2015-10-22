@@ -79,6 +79,10 @@ public class Fachada {
 		return controle.getPost(atributo, index);
 	}
 	
+	public void curtirPost(String email, int index){
+		controle.curtirPost(email, index);		
+	}
+	
 	public void adicionaAmigo(String email) throws Exception{
 		controle.adicionaAmigo(email);
 	}
@@ -91,21 +95,15 @@ public class Fachada {
 		return controle.getNotificacoes();
 	}
 	
-	public String getNextNotificacao() {
-		try {
-			return controle.getNextNotificacao();
-		} catch (Exception e) {
-			
-			e.getMessage();
-		}
-		return null;
+	public String getNextNotificacao() throws Exception{
+		return controle.getNextNotificacao();
 	}
 	
 	public void aceitaAmizade(String email) throws SystemException{
 		controle.aceitaAmizade(email);
 	}
 	
-	public void rejeitaAmizade(String email) throws SystemException{
+	public void rejeitaAmizade(String email) throws Exception{
 		controle.rejeitaAmizade(email);
 	}
 	

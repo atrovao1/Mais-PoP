@@ -245,14 +245,20 @@ public class Controle {
 		return usuarioLogado.getPost(atributo, index);
 	}
 	
-	public void adicionaAmigo(String email) throws SystemException{
-		Usuario novoAmigo = procuraUsuarioPeloEmail(email);
-		if(novoAmigo == null){
+	public void curtirPost(String email, int index){
+		Usuario tempUser = procuraUsuarioPeloEmail(email);
+		tempUser.curtirPost(usuarioLogado.getNome(), index);
+		
+	}
+	
+	public void adicionaAmigo(String email) throws Exception{
+		Usuario tempUser = procuraUsuarioPeloEmail(email);
+		if(procuraUsuarioPeloEmail(email) == null){
 			throw new SystemException("Um usuarix com email "+ email +" nao esta cadastradx.");
 		
 		}else{
-		
-			usuarioLogado.adicionaAmigo(novoAmigo);
+			tempUser.setNotificacoes(usuarioLogado.getNome()+" quer sua amizade.");
+			tempUser.adicionaAmigo(usuarioLogado.getNome());
 		}
 	}
 	
@@ -263,32 +269,44 @@ public class Controle {
 		
 		}else{
 			usuarioLogado.removeAmigo(amigoRemovido);
+			amigoRemovido.removeAmigo(usuarioLogado);
 		}
 	}
+	
 	public int getNotificacoes(){
 		return usuarioLogado.getNotificacoes();
 	}
 	
 	public String getNextNotificacao() throws Exception{
-		return usuarioLogado.getNextNotificacao();
+		if (usuarioLogado.getNotificacoes() == 0){
+			throw new Exception("Nao ha mais notificacoes.");
+		
+		}else{
+			return usuarioLogado.getNextNotificacao();
+			
+		}
 	}
 	
-	public void rejeitaAmizade(String email) throws SystemException{
-			Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
-			if(usuarioLogado.getListaDeSolicitacoes().contains(usuarioProcurado)){
-				throw new SystemException(usuarioProcurado.getNome()+" nao lhe enviou solicitacoes de amizade.");
+	public void rejeitaAmizade(String email) throws Exception{
+		Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
+		
+		if(usuarioProcurado == null){
+			throw new Exception("Um usuarix com email "+email+" nao esta cadastradx.");
+		
+		}else if (!usuarioLogado.getListaDeSolicitacoes().contains(usuarioProcurado.getNome())){
+			throw new Exception(usuarioProcurado.getNome()+" nao lhe enviou solicitacoes de amizade."); 
 			
-			}else if(usuarioProcurado == null){
-				throw new SystemException("Um usuarix com email "+ email +" nao esta cadastradx.");
-				
-			}else{
-			usuarioLogado.rejeitaAmizade(usuarioProcurado);
-			}
+		}else{
+		usuarioProcurado.setNotificacoes(usuarioLogado.getNome()+" rejeitou sua amizade.");;	
+		usuarioLogado.rejeitaAmizade(usuarioProcurado);
 		}
+	}
 	
+	@SuppressWarnings("unused")
 	public void aceitaAmizade(String email) throws SystemException{
 		Usuario usuarioProcurado = procuraUsuarioPeloEmail(email);
-		if(usuarioLogado.getListaDeSolicitacoes().contains(usuarioProcurado)){
+		
+		if(!usuarioLogado.getListaDeSolicitacoes().contains(usuarioProcurado.getNome())){
 			throw new SystemException(usuarioProcurado.getNome()+" nao lhe enviou solicitacoes de amizade.");
 		
 		}else if(usuarioProcurado == null){
@@ -296,6 +314,7 @@ public class Controle {
 		
 		}else{
 			usuarioLogado.aceitaAmizade(usuarioProcurado);
+			usuarioProcurado.setListaDeAmigos(usuarioLogado);
 		}
 	}
 	

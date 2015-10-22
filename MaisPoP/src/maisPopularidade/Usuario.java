@@ -1,7 +1,6 @@
 package maisPopularidade;
 
 import java.util.ArrayList;
-
 import exception.UserException;
 
 public class Usuario {
@@ -12,7 +11,7 @@ public class Usuario {
 	private String senha;
 	private String imagem;
 	private ArrayList<Post> posts;
-	private ArrayList<Usuario> listaDeSolicitacoes;
+	private ArrayList<String> listaDeSolicitacoes;
 	private ArrayList<Usuario> listaDeAmigos;
 	private ArrayList<String> notificacoes;
 	public Valida valida;
@@ -53,6 +52,9 @@ public class Usuario {
 		this.dataNasc = dataNasc;
 		this.posts = new ArrayList<Post>();
 		this.imagem = imagem;
+		this.notificacoes = new ArrayList<String>();
+		this.listaDeAmigos = new ArrayList<Usuario>();
+		this.listaDeSolicitacoes = new ArrayList<String>();
 	}
 	
 	public String getNome() {
@@ -124,23 +126,34 @@ public class Usuario {
 		return (Post) posts.get(index);
 	}
 	
-	public String toString(){
-		return this.nome+" - "+this.email;
+	public void curtirPost(String nome, int index){
+		Post post = posts.get(index);
+		post.setCurtidas(1);
+		setNotificacoes(nome+" curtiu seu post de "+post.getData()+".");
+		
 	}
+	
 
 	// Caso de Uso 4
 	
-	public ArrayList<Usuario> getListaDeSolicitacoes(){
+	public void setListaDeAmigos(Usuario novoAmigo){
+		this.listaDeAmigos.add(novoAmigo);
+	}
+	
+	public ArrayList<String> getListaDeSolicitacoes(){
 		return this.listaDeSolicitacoes;
+	}
+	
+	public void setListaDeSolicitacoes(String nomeAmigo){
+		this.listaDeSolicitacoes.add(nomeAmigo);
 	}
 	
 	public ArrayList<Usuario> getListaDeAmigos() {
 		return listaDeAmigos;
 	}
 
-	public void adicionaAmigo(Usuario novoAmigo) {
-		setNotificacoes(novoAmigo.getNome()+" quer sua amizade.");
-		listaDeSolicitacoes.add(novoAmigo);
+	public void adicionaAmigo(String nome) {
+		setListaDeSolicitacoes(nome);
 	}
 	
 	public void removeAmigo(Usuario amigoRemovido) throws Exception{
@@ -150,19 +163,14 @@ public class Usuario {
 		}else{
 			
 		this.listaDeAmigos.remove(amigoRemovido);
-		amigoRemovido.setNotificacoes(getNome()+" removeu sua amizade.");
+		amigoRemovido.setNotificacoes(this.nome+" removeu a sua amizade.");
 		}
 	}
 
-	public String getNextNotificacao() throws Exception{
-		if (getNotificacoes() == 0){
-			throw new Exception("Nao ha mais notificacoes.");
-		
-		}else{
+	public String getNextNotificacao(){
 		String notificacao = notificacoes.get(0);
 		notificacoes.remove(0);
 		return notificacao;
-		}
 	}
 	
 	public int getNotificacoes(){
@@ -181,11 +189,14 @@ public class Usuario {
 	
 	public void rejeitaAmizade(Usuario usuario){
 		listaDeSolicitacoes.remove(usuario);
-		usuario.setNotificacoes(getNome()+" rejeitou sua amizade.");
 	}
 	
 	public int getQtdAmigos(){
 		return listaDeAmigos.size();
+	}
+	
+	public String toString(){
+		return this.nome+" - "+this.email;
 	}
 	
 }
