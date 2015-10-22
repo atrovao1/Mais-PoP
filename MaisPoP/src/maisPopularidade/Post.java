@@ -1,11 +1,13 @@
 package maisPopularidade;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Post {
 	
+	private static final int MAXIMO_CARACTERES = 200;
 	private String mensagem;
-	private String hashtag;
+	private List<Midia> midias;
 	private String data;
 	private Valida valida;
 	private int curtidas;
@@ -15,7 +17,7 @@ public class Post {
 		if (!valida.conteudoPost(mensagem)) {
 			throw new Exception("Conteudo do post nao pode ser nulo ou vazio.");
 		}
-		if (separaMensagem(mensagem).length()>= 200){
+		if (separaMensagem(mensagem).length()>= MAXIMO_CARACTERES){
 			throw new Exception("Nao eh possivel criar o post. O limite maximo da mensagem sao 200 caracteres.");	
 		}
 		if (mensagem.contains("#")) {
@@ -25,14 +27,15 @@ public class Post {
 						+  " Erro na hashtag: '" + hashtagErro + "'.");
 			}
 		}
+				
 		
-		this.mensagem = mensagem;
-		this.hashtag = hashtag;
+		this.mensagem = separaMensagem(mensagem);
 		this.data = data;
 		this.curtidas = 0;
+		this.midias = new ArrayList<>();
 	}
 	
-		public String separaMensagem(String conteudo) {
+		private String separaMensagem(String conteudo) {
 			ArrayList<String> mensagem = new ArrayList<String>();
 			String[] palavras = conteudo.split(" ");
 			for (String palavra : palavras) {
@@ -42,7 +45,7 @@ public class Post {
 			return String.join(" ", mensagem);
 		}
 		
-		public String separaHashtags(String conteudo) {
+		private String separaHashtags(String conteudo) {
 			ArrayList<String> hashtags = new ArrayList<String>();
 			String[] palavras = conteudo.split(" ");
 			for (String palavra : palavras) {
@@ -53,14 +56,19 @@ public class Post {
 			return String.join(",", hashtags);
 		}
 		
-		public String separaMidia(String conteudo) {
-			ArrayList<String> midias = new ArrayList<String>();
+		public void adicionaMidia(String conteudo) {
 			String[] palavras = conteudo.split(" ");
 			for (String palavra : palavras) {
-				if (palavra.startsWith("<"))
-					midias.add(palavra);
+				if (palavra.startsWith("<imagem>")){
+					 String caminho = palavra.substring(7, palavra.length()-9);
+					 midias.add(new Imagem(caminho));
+				
+				}else if(palavra.startsWith("<audio>")){
+					String caminho = palavra.substring(6, palavra.length()-8);
+					midias.add(new Audio(caminho));
+				}
+				
 			}
-			return String.join(" ", midias);
 		}
 		
 		public String formataDataPost(){
@@ -81,7 +89,7 @@ public class Post {
 		
 
 		public String getMensagem() {
-				return separaMensagem(mensagem);
+				return mensagem;
 		}
 
 		public void setMensagem(String mensagem) {
@@ -100,7 +108,7 @@ public class Post {
 			return separaHashtags(mensagem);
 		}
 
-		@Override
+		@Override				  
 		public String toString() {
 			return mensagem  + " (" + formataDataPost() + ")";
 		}
@@ -111,6 +119,11 @@ public class Post {
 
 		public void setCurtidas(int curtidas) {
 			this.curtidas += curtidas;
+		}
+
+		public String getConteudoPost(int indice) {
+			
+			return midias.get(indice).toString();
 		}
 		
 		

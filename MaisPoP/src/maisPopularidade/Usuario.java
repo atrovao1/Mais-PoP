@@ -133,6 +133,11 @@ public class Usuario {
 		
 	}
 	
+	public String getConteudoPost(int indice, int post){
+		return this.posts.get(post).getConteudoPost(indice);
+				
+	}
+	
 
 	// Caso de Uso 4
 	

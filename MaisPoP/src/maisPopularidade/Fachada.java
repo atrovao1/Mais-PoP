@@ -15,10 +15,10 @@ public class Fachada {
 	
 	public static void main(String[] args) {
 		      args = new String[] {"maisPopularidade.Fachada",
-				"MaisPop/resources/Scripts de Teste" + "/usecase_1.txt",
-				"MaisPop/resources/Scripts de Teste" + "/usecase_2.txt",
-				"MaisPop/resources/Scripts de Teste" + "/usecase_3.txt",
-				"MaisPop/resources/Scripts de Teste" + "/usecase_4.txt"
+				"MaisPoP/resources/Scripts de Teste" + "/usecase_1.txt",
+				"MaisPoP/resources/Scripts de Teste" + "/usecase_2.txt",
+				"MaisPoP/resources/Scripts de Teste" + "/usecase_3.txt",
+				"MaisPoP/resources/Scripts de Teste" + "/usecase_4.txt"
 
 		};
 		    EasyAccept.main(args);
